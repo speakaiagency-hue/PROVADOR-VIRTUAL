@@ -128,10 +128,13 @@ const App: React.FC = () => {
         setLoadingMessage(`Reconhecendo apenas a roupa...`);
         const cleanedImageUrl = await extractGarmentOnly(garmentFile);
         
+        // Converte a URL limpa de volta para um Blob para o próximo passo se necessário,
+        // mas o generateVirtualTryOnImage agora aceita URL ou File.
         const res = await fetch(cleanedImageUrl);
         const blob = await res.blob();
         finalGarmentFile = new File([blob], "cleaned.png", { type: "image/png" });
         
+        // Atualiza a informação do guarda-roupa para mostrar a peça limpa
         finalGarmentInfo = { ...garmentInfo, url: cleanedImageUrl };
         
         setWardrobe(prev => prev.map(item => item.id === garmentInfo.id ? finalGarmentInfo : item));
@@ -196,6 +199,7 @@ const App: React.FC = () => {
 
     try {
       const newImageUrl = await generatePoseVariation(baseImageForPoseChange, poseInstruction);
+      // DO: Use functional state update with proper immutability to fix mutation issues and potential TS unknown errors
       setOutfitHistory((prevHistory: OutfitLayer[]) => {
         return prevHistory.map((layer, idx) => {
           if (idx === currentOutfitIndex) {
