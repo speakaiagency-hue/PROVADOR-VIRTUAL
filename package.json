@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && tsc",
     "preview": "vite preview --host --port $PORT",
     "start:frontend": "vite preview --host --port $PORT",
-    "start:api": "node services/server.js",
-    "start": "node services/server.js"
+    "start:api": "node build/services/server.js",
+    "start": "node build/services/server.js"
   },
   "dependencies": {
     "react": "^19.1.0",
