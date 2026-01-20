@@ -21,10 +21,7 @@
   "include": [
     "src",
     "services",
-    "types.ts",
-    "index.tsx",
-    "index.html",
-    "vite.config.ts"
+    "types.ts"
   ],
   "exclude": [
     "node_modules",
