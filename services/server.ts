@@ -1,17 +1,12 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import {
   generateModelImage,
   extractGarmentOnly,
   generateVirtualTryOnImage,
   generatePoseVariation
-} from "./geminiService.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+} from "./geminiService";
 
 const app = express();
 app.use(cors());
@@ -23,7 +18,7 @@ app.post("/api/generate-model", async (req, res) => {
     const { image } = req.body;
     const result = await generateModelImage(image);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 });
@@ -33,7 +28,7 @@ app.post("/api/extract-garment", async (req, res) => {
     const { image } = req.body;
     const result = await extractGarmentOnly(image);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 });
@@ -43,7 +38,7 @@ app.post("/api/virtual-tryon", async (req, res) => {
     const { modelImage, garmentImage } = req.body;
     const result = await generateVirtualTryOnImage(modelImage, garmentImage);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 });
@@ -53,16 +48,9 @@ app.post("/api/pose-variation", async (req, res) => {
     const { tryOnImage, pose } = req.body;
     const result = await generatePoseVariation(tryOnImage, pose);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
-});
-
-// Servir frontend buildado
-app.use(express.static(path.join(__dirname, "../dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
