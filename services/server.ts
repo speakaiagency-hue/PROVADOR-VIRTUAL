@@ -4,13 +4,13 @@ import bodyParser from "body-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// importa suas funções do geminiService.js (precisa estar convertido para JS)
+// importa suas funções do geminiService.ts
 import {
   generateModelImage,
   extractGarmentOnly,
   generateVirtualTryOnImage,
   generatePoseVariation
-} from "./geminiService.js";
+} from "./geminiService";
 
 const app = express();
 app.use(cors());
@@ -22,7 +22,7 @@ app.post("/api/generate-model", async (req, res) => {
     const { image } = req.body;
     const result = await generateModelImage(image);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message || "Erro interno" });
   }
 });
@@ -32,7 +32,7 @@ app.post("/api/extract-garment", async (req, res) => {
     const { image } = req.body;
     const result = await extractGarmentOnly(image);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message || "Erro interno" });
   }
 });
@@ -42,7 +42,7 @@ app.post("/api/virtual-tryon", async (req, res) => {
     const { modelImage, garmentImage } = req.body;
     const result = await generateVirtualTryOnImage(modelImage, garmentImage);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message || "Erro interno" });
   }
 });
@@ -52,7 +52,7 @@ app.post("/api/pose-variation", async (req, res) => {
     const { tryOnImage, pose } = req.body;
     const result = await generatePoseVariation(tryOnImage, pose);
     res.json({ image: result });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ error: err.message || "Erro interno" });
   }
 });
